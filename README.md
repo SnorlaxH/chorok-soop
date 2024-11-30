@@ -16,7 +16,7 @@ SOOP의 기능을 보조하는 크롬 확장 프로그램(Chrome Extension)입�
 ## 사용 방법
 
 #### 1. 크롬 확장 프로그램 다운로드
-- [크롬 웹 스토어에서 추가하기]()
+- [크롬 웹 스토어에서 추가하기](https://chromewebstore.google.com/detail/%EC%B5%B8%EB%A1%9D-%EC%88%B2/hannhmpalclmeijjbncdonchgmmkpkjn)
 
 #### 2. 설치된 확장 프로그램에서 원하는 기능을 선택 후 새로고침
 [!image](banner.png)
