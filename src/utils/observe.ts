@@ -94,15 +94,23 @@ export const getChatAreaObserver = (DONATE_IMAGE = false) => {
                 if (!$msg.dataset.proceed) {
                     $msg.dataset.proceed = 'true';
 
-
+                    const msgList = Array<string>();
                     $msg.childNodes.forEach((el: Node) => {
                         try {
-                            if (el.nodeName == 'IMG' || (el.nodeName != '#text' && el.toElement().style.display == 'none')) return;
-                            el.toElement().innerHTML = processChatMessages(el.textContent || '');
+                            if (el.nodeName === '#text') {
+                                msgList.push(processChatMessages(el.textContent || ''))
+                            }
+                            else if (el.nodeName == 'IMG') return;
+                            else {
+                                if (el.toElement().style.display === 'none') return;
+                                msgList.push(el.toElement().outerHTML);
+                            }
+
                         } catch (e) {
                             console.log(e, el, typeof el);
                         }
                     })
+                    $msg.innerHTML = msgList.join('');
                 }
             });
         });
