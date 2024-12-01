@@ -1,6 +1,7 @@
 import { LIVE_LAYOUT_WRAP, POST_LAYOUT_WRAP } from "./constants/selectors";
 import { injectLivePage } from "./page/live";
 import { injectPostPage } from "./page/post";
+import { injectVodPage } from "./page/vod";
 
 const whenPageLoaded = setInterval(() => {
     const isBodyLoaded = !!document.body;
@@ -9,11 +10,20 @@ const whenPageLoaded = setInterval(() => {
 
     if (isBodyLoaded && window && typeof window !== undefined) {
         if ($liveWrap) {
-            injectLivePage();
+            try {
+                injectLivePage();
+                injectVodPage();
+            } catch (e) {
+                console.warn(e);
+            }
             clearInterval(whenPageLoaded);
         }
         else if ($postWrap) {
-            injectPostPage();
+            try {
+                injectPostPage();
+            } catch (e) {
+                console.warn(e);
+            }
             clearInterval(whenPageLoaded);
         }
     }

@@ -1,6 +1,6 @@
 import { COMMENT_SHORTCUT } from '../constants/storage.ts';
 import '../utils/prototype.ts';
-import { COMMENT_SUBMIT, COMMENT_WRITE } from '../constants/selectors.ts';
+import { COMMENT_MODIFY, COMMENT_SUBMIT, COMMENT_WRITE, COMMENT_SECTION } from '../constants/selectors.ts';
 
 export const isPostPage = () => {
     return document.URL.includes("ch.sooplive.co.kr") && document.URL.includes('/post/');
@@ -17,10 +17,15 @@ export const injectPostPage = () => {
                     const { target } = event;
                     if (target instanceof HTMLElement) {
                         console.log(target.id);
-                        if (COMMENT_WRITE === target.id && event.ctrlKey) {
-                            console.log(event.key)
-                            if (event.key === 'Enter')
-                                document.querySelector(COMMENT_SUBMIT)?.toElement().click();
+                        if (event.ctrlKey && event.key === 'Enter') {
+                            const section = target.closest(COMMENT_SECTION);
+                            if (COMMENT_WRITE === target.id) {
+                                section?.querySelector(COMMENT_SUBMIT)?.toElement().click();
+                            }
+                            else if (target.id.includes(COMMENT_MODIFY)) {
+                                console.log(section);
+                                section?.querySelector(COMMENT_SUBMIT)?.toElement().click();
+                            }
                         }
                     }
                 }

@@ -1,7 +1,7 @@
 export const LIVE_LAYOUT_WRAP = '#webplayer_contents';
 export const POST_LAYOUT_WRAP = '#bs-wrap';
 
-export const VIDEO_PLAYER = '#livePlayer';;
+export const VIDEO_PLAYER = '.af_video';;
 
 export const NOT_BROADCAST = '#notBroadingList';
 
@@ -22,4 +22,8 @@ export const INPUT_UI_LIST = [
 
 export const COMMENT_WRITE = 'comment_write_form_input';
 
-export const COMMENT_SUBMIT = '.cmmt_inp_wrap button[type=submit]';
+export const COMMENT_SECTION = '.cmmt_inp';
+
+export const COMMENT_MODIFY = 'comment_modify_form_'
+
+export const COMMENT_SUBMIT = 'button[type=submit]';

@@ -100,9 +100,11 @@ export const getChatAreaObserver = (DONATE_IMAGE = false) => {
                             if (el.nodeName === '#text') {
                                 msgList.push(processChatMessages(el.textContent || ''))
                             }
-                            else if (el.nodeName == 'IMG') return;
+                            else if (el.nodeName == 'IMG') {
+                                msgList.push(el.toElement().outerHTML);
+                            }
                             else {
-                                if (el.toElement().style.display === 'none') return;
+                                // if (el.toElement().style.display === 'none') return;
                                 msgList.push(el.toElement().outerHTML);
                             }
 
@@ -130,12 +132,14 @@ export const getNoticeAreaObserver = () => {
             if (!msg.dataset.proceed) {
                 const notice = Array<string>();
                 msg.childNodes.forEach((el: Node) => {
-                    if (el.nodeName == 'IMG') return;
-
                     if (el.nodeName === '#text') {
                         notice.push(processChatMessages(el.textContent || ''))
                     }
+                    else if (el.nodeName == 'IMG') {
+                        notice.push(el.toElement().outerHTML);
+                    }
                     else {
+                        // if (el.toElement().style.display === 'none') return;
                         notice.push(el.toElement().outerHTML);
                     }
 
