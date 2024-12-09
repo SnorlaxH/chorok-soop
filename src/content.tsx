@@ -2,6 +2,7 @@ import { LIVE_LAYOUT_WRAP, POST_LAYOUT_WRAP } from "./constants/selectors";
 import { injectLivePage } from "./page/live";
 import { injectPostPage } from "./page/post";
 import { injectVodPage } from "./page/vod";
+import { getPageChangeObserver } from "./utils/observe";
 
 const whenPageLoaded = setInterval(() => {
     const isBodyLoaded = !!document.body;
@@ -10,13 +11,22 @@ const whenPageLoaded = setInterval(() => {
 
     if (isBodyLoaded && window && typeof window !== undefined) {
         if ($liveWrap) {
-            try {
+            const callback = () => {
                 injectLivePage();
                 injectVodPage();
+            }
+            try {
+                callback();
             } catch (e) {
                 console.warn(e);
             }
-            clearInterval(whenPageLoaded);
+
+            const title = document.querySelector('title');
+            getPageChangeObserver(callback).observe(title!, {
+                subtree: true,
+                characterData: true,
+                childList: true
+            });
         }
         else if ($postWrap) {
             try {
@@ -24,7 +34,7 @@ const whenPageLoaded = setInterval(() => {
             } catch (e) {
                 console.warn(e);
             }
-            clearInterval(whenPageLoaded);
         }
+        clearInterval(whenPageLoaded);
     }
 }, 500);

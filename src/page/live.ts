@@ -30,7 +30,8 @@ export const injectLivePage = async () => {
             }
 
             if (
-                res[CAPTURE_BUTTON]
+                res[CAPTURE_BUTTON]&&
+                !document.getElementById("crs-capture-btn")
             ) {
                 const $setting_box = document.querySelector('.setting_box');
                 const $CaptureButton = document.createElement("div");

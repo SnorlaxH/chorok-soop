@@ -153,3 +153,12 @@ export const getNoticeAreaObserver = () => {
 
     return new MutationObserver(callback);
 }
+
+export const getPageChangeObserver = (fn: Function) => {
+    const callback = () => {
+        setTimeout(() => {
+            fn();
+        }, 500);
+    };
+    return new MutationObserver(callback);
+}
