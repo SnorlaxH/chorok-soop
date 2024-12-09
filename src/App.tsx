@@ -7,7 +7,8 @@ import {
     CAPTURE_BUTTON,
     CHAT_URL_LINK,
     COMMENT_SHORTCUT,
-    DONATE_IMAGE,
+    DONATE_IMAGE_SAVE,
+    DONATE_IMAGE_HIDE,
 } from './constants/storage';
 
 function App() {
@@ -42,6 +43,18 @@ function App() {
                         </div>
                     </Checkbox>
 
+                    <Checkbox id={DONATE_IMAGE_HIDE}>
+                        <div className="config-item">
+                            <p className="item-title">후원 메시지 숨기기</p>
+                            <p className="item-desc">채팅창에 후원 메시지를 숨깁니다.</p>
+                        </div>
+                    </Checkbox>
+                </div>
+
+                <hr />
+
+                <div className="config-group">
+
                     <Checkbox id={COMMENT_SHORTCUT}>
                         <div className="config-item">
                             <p className="item-title">댓글 등록 단축키</p>
@@ -54,7 +67,7 @@ function App() {
                 <hr />
 
                 <div className="config-group">
-                    <Checkbox id={DONATE_IMAGE}>
+                    <Checkbox id={DONATE_IMAGE_SAVE}>
                         <div className="config-item">
                             <p className="item-title">후원 이미지 저장</p>
                             <p className="item-desc">후원 채팅을 클릭해 이미지로 저장합니다.</p>

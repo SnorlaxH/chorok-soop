@@ -1,6 +1,6 @@
 import '../utils/prototype.ts';
 import { CHAT_LIST_AREA, CHAT_NOTICE, CHAT_WRITE_AREA, NOT_BROADCAST, PLAYER_BUTTONS } from "../constants/selectors";
-import { CAPTURE_BUTTON, CHAT_URL_LINK, COPY_PASTE, DONATE_IMAGE } from "../constants/storage";
+import { CAPTURE_BUTTON, CHAT_URL_LINK, COPY_PASTE, DONATE_IMAGE_HIDE, DONATE_IMAGE_SAVE } from "../constants/storage";
 import { createReactElement, injectScript, waitingElement } from "../utils/dom";
 import { getChatAreaObserver, getNoticeAreaObserver } from "../utils/observe";
 import CaptureButton from '../components/CaptureButton/CaptureButton.tsx';
@@ -18,7 +18,7 @@ export const injectLivePage = async () => {
     }
 
     chrome.storage.local.get(
-        [COPY_PASTE, CAPTURE_BUTTON, CHAT_URL_LINK, DONATE_IMAGE],
+        [COPY_PASTE, CAPTURE_BUTTON, CHAT_URL_LINK, DONATE_IMAGE_SAVE, DONATE_IMAGE_HIDE],
         (res) => {
             const $btn_list = document.querySelector(PLAYER_BUTTONS)
 
@@ -30,7 +30,7 @@ export const injectLivePage = async () => {
             }
 
             if (
-                res[CAPTURE_BUTTON]&&
+                res[CAPTURE_BUTTON] &&
                 !document.getElementById("crs-capture-btn")
             ) {
                 const $setting_box = document.querySelector('.setting_box');
@@ -54,7 +54,11 @@ export const injectLivePage = async () => {
 
                 const $chat_area = document.querySelector(CHAT_LIST_AREA);
                 if (!$chat_area) return;
-                getChatAreaObserver(res[DONATE_IMAGE]).observe($chat_area, {
+                getChatAreaObserver({
+                    DONATE_HIDE: res[DONATE_IMAGE_HIDE],
+                    DONATE_IMAGE: res[DONATE_IMAGE_SAVE]
+                },
+                ).observe($chat_area, {
                     childList: true,
                     subtree: true
                 });

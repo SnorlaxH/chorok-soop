@@ -70,7 +70,8 @@ const processChatMessages = (msg: string) => {
     return updatedText;
 }
 
-export const getChatAreaObserver = (DONATE_IMAGE = false) => {
+export const getChatAreaObserver = (res: any) => {
+    const { DONATE_HIDE, DONATE_IMAGE } = res;
     const callback = (mutationList: MutationRecord[]) => {
         mutationList.forEach((mutation) => {
             mutation.addedNodes.forEach((node: Node) => {
@@ -86,6 +87,13 @@ export const getChatAreaObserver = (DONATE_IMAGE = false) => {
                             captureDonate(node.toElement());
                         }, false)
                         $donate.dataset.proceed = 'true';
+                    }
+                }
+
+                if (DONATE_HIDE) {
+                    const $donate = node.querySelector(`.${DONATION_COTAINER}`) as HTMLElement;
+                    if ($donate) {
+                        node.remove();
                     }
                 }
 
