@@ -81,3 +81,9 @@ kbd {
 .config-item>.item-desc {
     color: #5F5F5F;
 }
+
+.footer {
+    color: #5F5F5F;
+    text-align: center;
+    margin-top: 5em;
+}

@@ -83,7 +83,7 @@ export const getChatAreaObserver = (res: any) => {
                     const $donate = node.querySelector(`.${DONATION_COTAINER}`) as HTMLElement;
                     if ($donate && !$donate.dataset.proceed) {
                         $donate.addEventListener('click', () => {
-                            console.log($donate);
+                            // console.log($donate);
                             captureDonate(node.toElement());
                         }, false)
                         $donate.dataset.proceed = 'true';
@@ -153,7 +153,7 @@ export const getNoticeAreaObserver = () => {
 
                     msg.dataset.proceed = 'true';
                 })
-                console.log(notice);
+                // console.log(notice);
                 msg.innerHTML = notice.join('');
             }
         })

@@ -11,6 +11,8 @@ import {
     DONATE_IMAGE_HIDE,
 } from './constants/storage';
 
+const APP_VER = `ver. ${chrome.runtime.getManifest().version}`
+
 function App() {
     return (
         <>
@@ -75,6 +77,8 @@ function App() {
                     </Checkbox>
                 </div>
             </div>
+
+            <div className="footer">{APP_VER}</div>
         </>
     )
 }
