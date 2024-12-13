@@ -19,7 +19,7 @@ SOOP의 기능을 보조하는 크롬 확장 프로그램(Chrome Extension)입�
 - [크롬 웹 스토어에서 추가하기](https://chromewebstore.google.com/detail/%EC%B5%B8%EB%A1%9D-%EC%88%B2/hannhmpalclmeijjbncdonchgmmkpkjn)
 
 #### 2. 설치된 확장 프로그램에서 원하는 기능을 선택 후 새로고침
-[!image](banner.png)
+<img src="banner.png">
 
 ## 기술의 범위
 - javascript만으로 작성된 내용으로, 모든 설정은 사용자 브라우저의 로컬 영역에 저장되며, 캡처 기능을 통한 파일 저장을 제외한 __외부 저장 공간에 대한 어떠한 액세스도 수행하지 않습니다.__
