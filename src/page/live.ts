@@ -4,6 +4,7 @@ import { CAPTURE_BUTTON, CHAT_URL_LINK, COPY_PASTE, DONATE_IMAGE_HIDE, DONATE_IM
 import { createReactElement, injectScript, waitingElement } from "../utils/dom";
 import { getChatAreaObserver, getNoticeAreaObserver } from "../utils/observe";
 import CaptureButton from '../components/CaptureButton/CaptureButton.tsx';
+import AudioCompressorButton from '../components/AudioCompressorButton/AudioCompressorButton.tsx';
 
 export const isLivePage = () => {
     return document.URL.includes("play.sooplive.co.kr") || document.URL.includes('play.afreecatv.com');
@@ -38,6 +39,11 @@ export const injectLivePage = async () => {
                 $CaptureButton.id = "crs-capture-btn";
                 $btn_list?.insertBefore($CaptureButton, $setting_box);
                 createReactElement($CaptureButton, CaptureButton);
+
+                const $AudioCompressorButton = document.createElement("div");
+                $AudioCompressorButton.id = "crs-compressor-btn";
+                $btn_list?.insertBefore($AudioCompressorButton, $setting_box);
+                createReactElement($AudioCompressorButton, AudioCompressorButton);
             }
 
             if (

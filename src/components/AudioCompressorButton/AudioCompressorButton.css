@@ -1,0 +1,13 @@
+.crs-compressor-btn {
+    position: relative;
+    color: #FFFFFF;
+    width: 32px;
+    height: 32px;
+}
+
+.crs-compressor-btn .tooltip {
+    display: none;
+}
+.crs-compressor-btn:hover .tooltip {
+    display: block !important;
+}
