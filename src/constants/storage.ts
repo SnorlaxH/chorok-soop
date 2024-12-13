@@ -14,3 +14,6 @@ export const DONATE_IMAGE_HIDE = 'crs-done-hide';
 
 // 후원 이미지로 저장
 export const DONATE_IMAGE_SAVE = 'crs-donte-image';
+
+// 오디오 컴프레서
+export const AUDIO_COMP_BUTTON = 'crs-compressor-btn';

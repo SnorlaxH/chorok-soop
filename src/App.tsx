@@ -9,6 +9,7 @@ import {
     COMMENT_SHORTCUT,
     DONATE_IMAGE_SAVE,
     DONATE_IMAGE_HIDE,
+    AUDIO_COMP_BUTTON,
 } from './constants/storage';
 
 const APP_VER = `ver. ${chrome.runtime.getManifest().version}`
@@ -49,6 +50,13 @@ function App() {
                         <div className="config-item">
                             <p className="item-title">후원 메시지 숨기기</p>
                             <p className="item-desc">채팅창에 후원 메시지를 숨깁니다.</p>
+                        </div>
+                    </Checkbox>
+
+                    <Checkbox id={AUDIO_COMP_BUTTON}>
+                        <div className="config-item">
+                            <p className="item-title">오디오 컴프레서</p>
+                            <p className="item-desc">오디오 컴프레서를 활성화 해 볼륨을 증폭합니다.</p>
                         </div>
                     </Checkbox>
                 </div>

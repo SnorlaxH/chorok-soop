@@ -1,6 +1,6 @@
 import '../utils/prototype.ts';
-import { CHAT_LIST_AREA, CHAT_NOTICE, CHAT_WRITE_AREA, NOT_BROADCAST, PLAYER_BUTTONS } from "../constants/selectors";
-import { CAPTURE_BUTTON, CHAT_URL_LINK, COPY_PASTE, DONATE_IMAGE_HIDE, DONATE_IMAGE_SAVE } from "../constants/storage";
+import { CHAT_LIST_AREA, CHAT_NOTICE, CHAT_WRITE_AREA, EL_CAPTURE_BUTTON, EL_COMP_BUTTON, NOT_BROADCAST, PLAYER_BUTTONS } from "../constants/selectors";
+import { AUDIO_COMP_BUTTON, CAPTURE_BUTTON, CHAT_URL_LINK, COPY_PASTE, DONATE_IMAGE_HIDE, DONATE_IMAGE_SAVE } from "../constants/storage";
 import { createReactElement, injectScript, waitingElement } from "../utils/dom";
 import { getChatAreaObserver, getNoticeAreaObserver } from "../utils/observe";
 import CaptureButton from '../components/CaptureButton/CaptureButton.tsx';
@@ -19,7 +19,7 @@ export const injectLivePage = async () => {
     }
 
     chrome.storage.local.get(
-        [COPY_PASTE, CAPTURE_BUTTON, CHAT_URL_LINK, DONATE_IMAGE_SAVE, DONATE_IMAGE_HIDE],
+        [COPY_PASTE, CAPTURE_BUTTON, CHAT_URL_LINK, DONATE_IMAGE_SAVE, DONATE_IMAGE_HIDE, AUDIO_COMP_BUTTON],
         (res) => {
             const $btn_list = document.querySelector(PLAYER_BUTTONS)
 
@@ -32,18 +32,13 @@ export const injectLivePage = async () => {
 
             if (
                 res[CAPTURE_BUTTON] &&
-                !document.getElementById("crs-capture-btn")
+                !document.getElementById(EL_CAPTURE_BUTTON)
             ) {
                 const $setting_box = document.querySelector('.setting_box');
                 const $CaptureButton = document.createElement("div");
-                $CaptureButton.id = "crs-capture-btn";
+                $CaptureButton.id = EL_CAPTURE_BUTTON;
                 $btn_list?.insertBefore($CaptureButton, $setting_box);
                 createReactElement($CaptureButton, CaptureButton);
-
-                const $AudioCompressorButton = document.createElement("div");
-                $AudioCompressorButton.id = "crs-compressor-btn";
-                $btn_list?.insertBefore($AudioCompressorButton, $setting_box);
-                createReactElement($AudioCompressorButton, AudioCompressorButton);
             }
 
             if (
@@ -70,22 +65,15 @@ export const injectLivePage = async () => {
                 });
             }
 
-            // if (
-            //     res[DONATE_IMAGE]
-            // ) {
-            //     const $chat_area = document.querySelector(CHAT_LIST_AREA);
-            //     if (!$chat_area) return;
-            //     $chat_area.addEventListener('click', (event) => {
-            //         const { target } = event;
-            //         if (target instanceof HTMLElement) {
-            //             const $donate = target.querySelector(`.${DONATION_COTAINER}`) as HTMLElement;
-            //             console.log($donate);
-            //             if ($donate) {
-            //                 captureDonate($donate);
-            //             }
-            //         }
-            //     });
-            // }
+            if (res[AUDIO_COMP_BUTTON] &&
+                !document.getElementById(EL_COMP_BUTTON)
+            ) {
+                const $setting_box = document.querySelector('.setting_box');
+                const $AudioCompressorButton = document.createElement("div");
+                $AudioCompressorButton.id = EL_COMP_BUTTON;
+                $btn_list?.insertBefore($AudioCompressorButton, $setting_box);
+                createReactElement($AudioCompressorButton, AudioCompressorButton);
+            }
         }
     )
 }
