@@ -10,8 +10,12 @@ export const isLivePage = () => {
     return document.URL.includes("play.sooplive.co.kr") || document.URL.includes('play.afreecatv.com');
 }
 
+export const isDashboard = () => {
+    return document.URL.includes('dashboard.sooplive.co.kr');
+}
+
 export const injectLivePage = async () => {
-    if (!isLivePage()) return;
+    if (!isLivePage() || !isDashboard()) return;
 
     const elBroad = await waitingElement(NOT_BROADCAST)
     if (elBroad?.style.display != 'none') {
@@ -25,7 +29,8 @@ export const injectLivePage = async () => {
 
             if (
                 res[COPY_PASTE] &&
-                document.querySelector(CHAT_WRITE_AREA)
+                document.querySelector(CHAT_WRITE_AREA) &&
+                !isDashboard()
             ) {
                 injectScript("inject.js");
             }

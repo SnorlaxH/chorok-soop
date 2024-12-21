@@ -6,7 +6,7 @@ import { save2png } from "./dom";
 
 // 이미지의 src를 corsproxy.io를 통해 요청하여 CORS 오류를 우회하는 함수
 async function fetchImageWithCorsProxy(url: string) {
-    const proxyUrl = `https://corsproxy.io/?${url}`;
+    const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(url)}`;
     const response = await fetch(proxyUrl);
 
     // Blob으로 응답을 받음
@@ -83,7 +83,7 @@ export const getChatAreaObserver = (res: any) => {
                     const $donate = node.querySelector(`.${DONATION_COTAINER}`) as HTMLElement;
                     if ($donate && !$donate.dataset.proceed) {
                         $donate.addEventListener('click', () => {
-                            // console.log($donate);
+                            console.log($donate);
                             captureDonate(node.toElement());
                         }, false)
                         $donate.dataset.proceed = 'true';
