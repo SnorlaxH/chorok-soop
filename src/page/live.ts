@@ -15,7 +15,7 @@ export const isDashboard = () => {
 }
 
 export const injectLivePage = async () => {
-    if (!isLivePage() || !isDashboard()) return;
+    if (!isLivePage() && !isDashboard()) return;
 
     const elBroad = await waitingElement(NOT_BROADCAST)
     if (elBroad?.style.display != 'none') {
