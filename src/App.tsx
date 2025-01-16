@@ -80,7 +80,8 @@ function App() {
                     <Checkbox id={DONATE_IMAGE_SAVE}>
                         <div className="config-item">
                             <p className="item-title">후원 이미지 저장</p>
-                            <p className="item-desc">후원 채팅을 클릭해 이미지로 저장합니다.</p>
+                            <p className="item-desc">후원 채팅을 좌클릭 해 이미지로 저장합니다.</p>
+                            <p className="item-desc">이미지 처리에 시간이 소요됩니다.</p>
                         </div>
                     </Checkbox>
                 </div>

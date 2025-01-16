@@ -1,5 +1,7 @@
 export const LIVE_LAYOUT_WRAP = '#webplayer_contents';
 export const POST_LAYOUT_WRAP = '#bs-wrap';
+export const DASHBOARD_LAYOUT_WRAP = '#soop_wrap[role=dashboard]';
+export const POPOUT_CHAT_WRAP = '.popout_chat';
 
 export const VIDEO_PLAYER = '.af_video';;
 

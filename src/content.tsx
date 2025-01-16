@@ -1,4 +1,5 @@
-import { LIVE_LAYOUT_WRAP, POST_LAYOUT_WRAP } from "./constants/selectors";
+import { DASHBOARD_LAYOUT_WRAP, LIVE_LAYOUT_WRAP, POPOUT_CHAT_WRAP, POST_LAYOUT_WRAP } from "./constants/selectors";
+import { injectDashboardPage } from "./page/dashboard";
 import { injectLivePage } from "./page/live";
 import { injectPostPage } from "./page/post";
 import { injectVodPage } from "./page/vod";
@@ -8,6 +9,8 @@ const whenPageLoaded = setInterval(() => {
     const isBodyLoaded = !!document.body;
     const $liveWrap = document.querySelector(LIVE_LAYOUT_WRAP);
     const $postWrap = document.querySelector(POST_LAYOUT_WRAP);
+    const $dashboardWrap = document.querySelector(DASHBOARD_LAYOUT_WRAP);
+    const $popoutWrap = document.querySelector(POPOUT_CHAT_WRAP);
 
     if (isBodyLoaded && window && typeof window !== undefined) {
         if ($liveWrap) {
@@ -31,6 +34,20 @@ const whenPageLoaded = setInterval(() => {
         else if ($postWrap) {
             try {
                 injectPostPage();
+            } catch (e) {
+                console.warn(e);
+            }
+        }
+        else if ($dashboardWrap) {
+            try {
+                injectDashboardPage();
+            } catch (e) {
+                console.warn(e);
+            }
+        }
+        else if ($popoutWrap) {
+            try {
+                injectDashboardPage();
             } catch (e) {
                 console.warn(e);
             }

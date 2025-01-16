@@ -1,34 +1,39 @@
 import '../utils/prototype.ts';
-import { CHAT_LIST_AREA, CHAT_NOTICE, CHAT_WRITE_AREA, EL_CAPTURE_BUTTON, EL_COMP_BUTTON, NOT_BROADCAST, PLAYER_BUTTONS } from "../constants/selectors";
+import { CHAT_LIST_AREA, CHAT_NOTICE, EL_CAPTURE_BUTTON, EL_COMP_BUTTON, PLAYER_BUTTONS } from "../constants/selectors";
 import { AUDIO_COMP_BUTTON, CAPTURE_BUTTON, CHAT_URL_LINK, COPY_PASTE, DONATE_IMAGE_HIDE, DONATE_IMAGE_SAVE } from "../constants/storage";
-import { createReactElement, injectScript, waitingElement } from "../utils/dom";
+import { createReactElement, waitingElement } from "../utils/dom";
 import { getChatAreaObserver, getNoticeAreaObserver } from "../utils/observe";
 import CaptureButton from '../components/CaptureButton/CaptureButton.tsx';
 import AudioCompressorButton from '../components/AudioCompressorButton/AudioCompressorButton.tsx';
 
-export const isLivePage = () => {
-    return document.URL.includes("play.sooplive.co.kr") || document.URL.includes('play.afreecatv.com');
+const isDashboard = () => {
+    return document.URL.includes('dashboard.sooplive.co.kr');
 }
 
-export const injectLivePage = async () => {
-    if (!isLivePage()) return;
+const isPopup = () => {
+    return document.URL.includes('dashboard.sooplive.co.kr/popup.php');
+}
 
-    const elBroad = await waitingElement(NOT_BROADCAST)
-    if (elBroad?.style.display != 'none') {
-        return;
+export const injectDashboardPage = async () => {
+    if (!isDashboard()) return;
+
+    if (!isPopup()) {
+        const elLive = await waitingElement('#livePlayer')
+        if (elLive?.style.display != 'block') {
+            return;
+        }
+    }
+    else {
+        const elChatArea = await waitingElement('#chat_area')
+        if(elChatArea?.style.display == 'block') {
+            return;
+        }
     }
 
     chrome.storage.local.get(
         [COPY_PASTE, CAPTURE_BUTTON, CHAT_URL_LINK, DONATE_IMAGE_SAVE, DONATE_IMAGE_HIDE, AUDIO_COMP_BUTTON],
         (res) => {
             const $btn_list = document.querySelector(PLAYER_BUTTONS)
-
-            if (
-                res[COPY_PASTE] &&
-                document.querySelector(CHAT_WRITE_AREA)
-            ) {
-                injectScript("inject.js");
-            }
 
             if (
                 res[CAPTURE_BUTTON] &&
@@ -46,7 +51,7 @@ export const injectLivePage = async () => {
             ) {
                 const $noti_area = document.querySelector(CHAT_NOTICE);
                 const $chat_area = document.querySelector(CHAT_LIST_AREA);
-
+                // if (!$noti_area) return;
                 if ($noti_area) {
                     getNoticeAreaObserver().observe($noti_area, {
                         attributes: true,
