@@ -7,6 +7,7 @@ var crs_copyPaste = setInterval(() => {
         $('#write_area').unbind('cut copy paste').bind('cut copy', (e) => {
             const { currentTarget } = e;
             const cb = [];
+            console.log(e);
             currentTarget.childNodes.forEach((el) => {
                 if (el.nodeName === 'IMG') {
                     cb.push(crs_getEmoji(el));

@@ -57,7 +57,7 @@ export default function AudioCompressorButton() {
                 sourceRef.current?.connect(compressorRef.current!);
                 compressorRef.current?.connect(audioContextRef.current.destination);
                 setAcActive(true);
-            } else if (active === "true") {
+            } else {
                 button.setAttribute("data-active", "false");
 
                 sourceRef.current!.disconnect(compressorRef.current!);

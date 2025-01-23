@@ -1,10 +1,18 @@
 import '../utils/prototype.ts';
-import { CHAT_LIST_AREA, CHAT_NOTICE, CHAT_WRITE_AREA, EL_CAPTURE_BUTTON, EL_COMP_BUTTON, NOT_BROADCAST, PLAYER_BUTTONS } from "../constants/selectors";
-import { AUDIO_COMP_BUTTON, CAPTURE_BUTTON, CHAT_URL_LINK, COPY_PASTE, DONATE_IMAGE_HIDE, DONATE_IMAGE_SAVE } from "../constants/storage";
+import { CHAT_LIST_AREA, CHAT_NOTICE, CHAT_WRITE_AREA, EL_CAPTURE_BUTTON, EL_COMP_BUTTON, NOT_BROADCAST, PLAYER_BUTTONS, EL_LIKE_BUTTON } from "../constants/selectors";
+import { AUDIO_COMP_BUTTON, CAPTURE_BUTTON, CHAT_URL_LINK, COPY_PASTE, DONATE_IMAGE_HIDE, DONATE_IMAGE_SAVE, USE_AUTO_UP } from "../constants/storage";
 import { createReactElement, injectScript, waitingElement } from "../utils/dom";
 import { getChatAreaObserver, getNoticeAreaObserver } from "../utils/observe";
 import CaptureButton from '../components/CaptureButton/CaptureButton.tsx';
 import AudioCompressorButton from '../components/AudioCompressorButton/AudioCompressorButton.tsx';
+
+var invlAutoLike: number | null = null;
+
+const fnAutoLike = () => {
+    const elLikeBtn = document.querySelector(EL_LIKE_BUTTON) as HTMLButtonElement;
+    console.log(elLikeBtn);
+    elLikeBtn.click();
+}
 
 export const isLivePage = () => {
     return document.URL.includes("play.sooplive.co.kr") || document.URL.includes('play.afreecatv.com');
@@ -19,7 +27,7 @@ export const injectLivePage = async () => {
     }
 
     chrome.storage.local.get(
-        [COPY_PASTE, CAPTURE_BUTTON, CHAT_URL_LINK, DONATE_IMAGE_SAVE, DONATE_IMAGE_HIDE, AUDIO_COMP_BUTTON],
+        [COPY_PASTE, CAPTURE_BUTTON, CHAT_URL_LINK, DONATE_IMAGE_SAVE, DONATE_IMAGE_HIDE, AUDIO_COMP_BUTTON, USE_AUTO_UP],
         (res) => {
             const $btn_list = document.querySelector(PLAYER_BUTTONS)
 
@@ -76,6 +84,23 @@ export const injectLivePage = async () => {
                 $AudioCompressorButton.id = EL_COMP_BUTTON;
                 $btn_list?.insertBefore($AudioCompressorButton, $setting_box);
                 createReactElement($AudioCompressorButton, AudioCompressorButton);
+            }
+
+            if (res[USE_AUTO_UP] &&
+                document.querySelector(EL_LIKE_BUTTON)
+            ) {
+                setTimeout(() => {
+                    fnAutoLike();
+                }, 3000);
+
+                if (invlAutoLike != null) {
+                    clearInterval(invlAutoLike);
+                }
+                invlAutoLike = setInterval(() => {
+                    if (new Date().toStr('HH:mm:ss') == '00:00:00') {
+                        fnAutoLike()
+                    }
+                }, 1000);
             }
         }
     )
