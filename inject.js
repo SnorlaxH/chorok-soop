@@ -5,10 +5,18 @@ function crs_getEmoji(el) {
 var crs_copyPaste = setInterval(() => {
     if (window.liveView) {
         $('#write_area').unbind('cut copy paste').bind('cut copy', (e) => {
+            e.preventDefault();
+
             const { currentTarget } = e;
             const cb = [];
-            console.log(e);
-            currentTarget.childNodes.forEach((el) => {
+
+            const selection = window.getSelection();
+            if(!selection.rangeCount) return;
+
+            const range = selection.getRangeAt(0);
+            const fragments = range.cloneContents();
+
+            fragments.childNodes.forEach((el) => {
                 if (el.nodeName === 'IMG') {
                     cb.push(crs_getEmoji(el));
                 }

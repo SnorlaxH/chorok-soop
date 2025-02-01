@@ -6,7 +6,7 @@ import { getChatAreaObserver, getNoticeAreaObserver } from "../utils/observe";
 import CaptureButton from '../components/CaptureButton/CaptureButton.tsx';
 import AudioCompressorButton from '../components/AudioCompressorButton/AudioCompressorButton.tsx';
 
-var invlAutoLike: number | null = null;
+let invlAutoLike: number | null = null;
 
 const fnAutoLike = () => {
     const elLikeBtn = document.querySelector(EL_LIKE_BUTTON) as HTMLButtonElement;
@@ -18,6 +18,31 @@ export const isLivePage = () => {
     return document.URL.includes("play.sooplive.co.kr") || document.URL.includes('play.afreecatv.com');
 }
 
+export const injectAutoLike = async () => {
+    chrome.storage.local.get(
+        [USE_AUTO_UP],
+        (res) => {
+            if (res[USE_AUTO_UP] &&
+                document.querySelector(EL_LIKE_BUTTON)
+            ) {
+                setTimeout(() => {
+                    fnAutoLike();
+                }, 3000);
+
+                if (invlAutoLike != null) {
+                    clearInterval(invlAutoLike);
+                }
+                invlAutoLike = setInterval(() => {
+                    const date = new Date()
+                    if (date.toStr('HH:mm:ss') == '00:00:00') {
+                        console.log('0시 UP!!')
+                        fnAutoLike()
+                    }
+                }, 1000);
+            }
+        });
+}
+
 export const injectLivePage = async () => {
     if (!isLivePage()) return;
 
@@ -27,7 +52,7 @@ export const injectLivePage = async () => {
     }
 
     chrome.storage.local.get(
-        [COPY_PASTE, CAPTURE_BUTTON, CHAT_URL_LINK, DONATE_IMAGE_SAVE, DONATE_IMAGE_HIDE, AUDIO_COMP_BUTTON, USE_AUTO_UP],
+        [COPY_PASTE, CAPTURE_BUTTON, CHAT_URL_LINK, DONATE_IMAGE_SAVE, DONATE_IMAGE_HIDE, AUDIO_COMP_BUTTON],
         (res) => {
             const $btn_list = document.querySelector(PLAYER_BUTTONS)
 
@@ -84,23 +109,6 @@ export const injectLivePage = async () => {
                 $AudioCompressorButton.id = EL_COMP_BUTTON;
                 $btn_list?.insertBefore($AudioCompressorButton, $setting_box);
                 createReactElement($AudioCompressorButton, AudioCompressorButton);
-            }
-
-            if (res[USE_AUTO_UP] &&
-                document.querySelector(EL_LIKE_BUTTON)
-            ) {
-                setTimeout(() => {
-                    fnAutoLike();
-                }, 3000);
-
-                if (invlAutoLike != null) {
-                    clearInterval(invlAutoLike);
-                }
-                invlAutoLike = setInterval(() => {
-                    if (new Date().toStr('HH:mm:ss') == '00:00:00') {
-                        fnAutoLike()
-                    }
-                }, 1000);
             }
         }
     )

@@ -1,6 +1,6 @@
 import { DASHBOARD_LAYOUT_WRAP, LIVE_LAYOUT_WRAP, POPOUT_CHAT_WRAP, POST_LAYOUT_WRAP } from "./constants/selectors";
 import { injectDashboardPage } from "./page/dashboard";
-import { injectLivePage } from "./page/live";
+import { injectAutoLike, injectLivePage } from "./page/live";
 import { injectPostPage } from "./page/post";
 import { injectVodPage } from "./page/vod";
 import { getPageChangeObserver } from "./utils/observe";
@@ -20,6 +20,7 @@ const whenPageLoaded = setInterval(() => {
             }
             try {
                 callback();
+                injectAutoLike();
             } catch (e) {
                 console.warn(e);
             }
