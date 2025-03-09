@@ -9,6 +9,7 @@ const whenPageLoaded = setInterval(() => {
     const isBodyLoaded = !!document.body;
     const $liveWrap = document.querySelector(LIVE_LAYOUT_WRAP);
     const $postWrap = document.querySelector(POST_LAYOUT_WRAP);
+    const $catchWrap = document.querySelector(CATCH_LAYOUT_WRAP);
     const $dashboardWrap = document.querySelector(DASHBOARD_LAYOUT_WRAP);
     const $popoutWrap = document.querySelector(POPOUT_CHAT_WRAP);
     const $catchWrap = document.querySelector(CATCH_LAYOUT_WRAP);
@@ -39,6 +40,9 @@ const whenPageLoaded = setInterval(() => {
             } catch (e) {
                 console.warn(e);
             }
+        }
+        else if ($catchWrap) {
+            injectVodPage()
         }
         else if ($dashboardWrap) {
             try {

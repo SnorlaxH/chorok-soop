@@ -32,9 +32,6 @@ export const COMMENT_MODIFY = 'comment_modify_form_'
 export const COMMENT_SUBMIT = 'button[type=submit]';
 
 export const EL_CAPTURE_BUTTON = 'crs-capture-btn'
-
-export const EL_COMP_BUTTON = 'crs-compressor-btn';
-
 export const EL_DOWNLOAD_BUTTON = 'crs-download-btn';
-
+export const EL_COMP_BUTTON = 'crs-compressor-btn';
 export const EL_LIKE_BUTTON = '.depend_item button#like';
