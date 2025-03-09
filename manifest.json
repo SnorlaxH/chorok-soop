@@ -10,12 +10,19 @@
         "128": "icon128.png"
     },
     "permissions": [
-        "storage"
+        "storage",
+        "tabs",
+        "activeTab",
+        "scripting"
     ],
     "host_permissions": [
         "*://*.afreecatv.com/*",
         "*://*.sooplive.co.kr/*"
     ],
+    "background": {
+        "service_worker": "src/background.ts",
+        "type": "module"
+    },
     "content_scripts": [
         {
             "matches": [
