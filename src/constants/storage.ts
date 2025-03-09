@@ -17,3 +17,6 @@ export const DONATE_IMAGE_SAVE = 'crs-donte-image';
 
 // 오디오 컴프레서
 export const AUDIO_COMP_BUTTON = 'crs-compressor-btn';
+
+// 자동 UP 누르기
+export const USE_AUTO_UP = 'crs-use-auto-up';

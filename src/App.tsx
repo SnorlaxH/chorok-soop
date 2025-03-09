@@ -10,6 +10,7 @@ import {
     DONATE_IMAGE_SAVE,
     DONATE_IMAGE_HIDE,
     AUDIO_COMP_BUTTON,
+    USE_AUTO_UP,
 } from './constants/storage';
 
 const APP_VER = `ver. ${chrome.runtime.getManifest().version}`
@@ -59,6 +60,13 @@ function App() {
                             <p className="item-desc">오디오 컴프레서를 활성화 해 볼륨을 증폭합니다.</p>
                         </div>
                     </Checkbox>
+
+                    <Checkbox id={USE_AUTO_UP}>
+                        <div className="config-item">
+                            <p className="item-title">UP버튼 자동 클릭</p>    
+                            <p className="item-desc">방송 입장(3초 후)에 자동으로 UP버튼을 누릅니다.</p>
+                        </div>
+                    </Checkbox>
                 </div>
 
                 <hr />
@@ -80,7 +88,8 @@ function App() {
                     <Checkbox id={DONATE_IMAGE_SAVE}>
                         <div className="config-item">
                             <p className="item-title">후원 이미지 저장</p>
-                            <p className="item-desc">후원 채팅을 클릭해 이미지로 저장합니다.</p>
+                            <p className="item-desc">후원 채팅을 좌클릭 해 이미지로 저장합니다.</p>
+                            <p className="item-desc">이미지 처리에 시간이 소요됩니다.</p>
                         </div>
                     </Checkbox>
                 </div>

@@ -1,6 +1,8 @@
 export const LIVE_LAYOUT_WRAP = '#webplayer_contents';
 export const POST_LAYOUT_WRAP = '#bs-wrap';
 export const CATCH_LAYOUT_WRAP = '.catch_webplayer_wrap';
+export const DASHBOARD_LAYOUT_WRAP = '#soop_wrap[role=dashboard]';
+export const POPOUT_CHAT_WRAP = '.popout_chat';
 
 export const VIDEO_PLAYER = '.af_video';;
 
@@ -34,3 +36,5 @@ export const EL_CAPTURE_BUTTON = 'crs-capture-btn'
 export const EL_DOWNLOAD_BUTTON = 'crs-download-btn';
 
 export const EL_COMP_BUTTON = 'crs-compressor-btn';
+
+export const EL_LIKE_BUTTON = '.depend_item button#like';
