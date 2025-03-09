@@ -10,17 +10,17 @@ interface CheckboxProps extends React.PropsWithChildren {
 
 const CustomSwitch = styled(Switch)(() => ({
     '& .MuiSwitch-switchBase.Mui-checked': {
-      color: "#ffffff",
+        color: "#ffffff",
     },
     '& .MuiSwitch-track': {
         backgroundColor: grey['A400'],
         opacity: 1,
     },
     '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-      backgroundColor: '#9ad3c3',
-      opacity: 1,
+        backgroundColor: '#9ad3c3',
+        opacity: 1,
     },
-  }));
+}));
 
 export default function Checkbox({ id, children }: CheckboxProps) {
     const [checked, setChecked] = useState<boolean>(false);

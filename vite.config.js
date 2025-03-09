@@ -5,4 +5,5 @@ import { crx } from "@crxjs/vite-plugin";
 import manifest from './manifest.json';
 export default defineConfig({
     plugins: [svgr(), react(), crx({ manifest: manifest })],
+    publicDir: "public"
 });

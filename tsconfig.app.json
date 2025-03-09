@@ -22,5 +22,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "inject.js"]
+  "include": ["src", "inject.js", "public/player.js"]
 }

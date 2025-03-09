@@ -5,11 +5,13 @@ import { INPUT_UI_LIST, VIDEO_PLAYER } from '../../constants/selectors';
 import { save2png } from '../../utils/dom';
 
 import './CaptureButton.css'
+import { isCatch } from '../../page/vod';
 
 export default function CaptureButton() {
     React.useEffect(() => {
         const captureEvent = (event: KeyboardEvent) => {
             const { target } = event;
+            console.log(target)
             if (target instanceof HTMLElement) {
                 if (!INPUT_UI_LIST.includes(target.className) && !event.ctrlKey) {
                     // T: 캡처
@@ -31,7 +33,7 @@ export default function CaptureButton() {
         e?.preventDefault();
 
         try {
-            const video = document.querySelector(VIDEO_PLAYER) as HTMLVideoElement;
+            const video = (isCatch() ? document.querySelector('video#video_p') : document.querySelector(VIDEO_PLAYER)) as HTMLVideoElement;
             const canvas = document.createElement('canvas');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;

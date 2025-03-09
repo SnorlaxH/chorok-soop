@@ -1,19 +1,19 @@
-.crs-capture-btn {
+.crs-download-btn {
     position: relative;
     color: #FFFFFF;
     width: 32px;
     height: 32px;
 }
 
-.crs-capture-btn .tooltip {
+.crs-download-btn .tooltip {
     display: none;
 }
 
-.crs-capture-btn:hover .tooltip {
+.crs-download-btn:hover .tooltip {
     display: block !important;
 }
 
-.catch_webplayer_wrap .crs-capture-btn {
+.catch_webplayer_wrap .crs-download-btn {
     background-color: rgba(70, 74, 83, .6);
     background-repeat: no-repeat;
     width: 40px;
@@ -22,13 +22,13 @@
     transition: all .2s;
 }
 
-.catch_webplayer_wrap .crs-capture-btn .tooltip {
+.catch_webplayer_wrap .crs-download-btn .tooltip {
     position: absolute;
     left: calc(100% + 10px);
     top: calc(50% - 10px);
     width: max-content;
 }
 
-.catch_webplayer_wrap .crs-capture-btn:hover .tooltip {
+.catch_webplayer_wrap .crs-download-btn .tooltip {
     background-color: rgba(70, 74, 83, .9);
 }
