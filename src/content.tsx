@@ -1,4 +1,4 @@
-import { LIVE_LAYOUT_WRAP, POST_LAYOUT_WRAP } from "./constants/selectors";
+import { CATCH_LAYOUT_WRAP, LIVE_LAYOUT_WRAP, POST_LAYOUT_WRAP } from "./constants/selectors";
 import { injectLivePage } from "./page/live";
 import { injectPostPage } from "./page/post";
 import { injectVodPage } from "./page/vod";
@@ -8,6 +8,7 @@ const whenPageLoaded = setInterval(() => {
     const isBodyLoaded = !!document.body;
     const $liveWrap = document.querySelector(LIVE_LAYOUT_WRAP);
     const $postWrap = document.querySelector(POST_LAYOUT_WRAP);
+    const $catchWrap = document.querySelector(CATCH_LAYOUT_WRAP);
 
     if (isBodyLoaded && window && typeof window !== undefined) {
         if ($liveWrap) {
@@ -34,6 +35,9 @@ const whenPageLoaded = setInterval(() => {
             } catch (e) {
                 console.warn(e);
             }
+        }
+        else if ($catchWrap) {
+            injectVodPage()
         }
         clearInterval(whenPageLoaded);
     }
