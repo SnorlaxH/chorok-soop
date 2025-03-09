@@ -41,7 +41,7 @@ export default function CaptureButton() {
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
             const imageDataURL = canvas.toDataURL('image/png');
-            const id = document.URL.replace('https://play.sooplive.co.kr/', '').split('/'[0]);
+            const id = document.URL.replace('https://play.sooplive.co.kr/', '').replace('https://vod.sooplive.co.kr/', '').split('/'[0]);
             save2png(imageDataURL, `chrok_soop_${id}_${new Date().getTime()}.png`);
         } catch (e) {
             console.warn(e);
