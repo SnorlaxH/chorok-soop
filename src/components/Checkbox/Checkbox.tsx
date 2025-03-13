@@ -31,8 +31,7 @@ export default function Checkbox({ id, children }: CheckboxProps) {
         });
     }, []);
 
-    const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(checked, event.target.checked);
+    const onChangeHandler = () => {
         const isChecked = !checked;
         setChecked(isChecked);
         chrome.storage.local.set({ [id]: isChecked });

@@ -45,7 +45,6 @@ export default function DownloadButton() {
                 m3u8.push({ url: file, title: data.title, thumb_nail: data.catch_thumb || data.thumb })
             })
 
-            console.log(m3u8)
             if (m3u8.length) {
                 chrome.runtime.sendMessage({
                     type: 'm3u8',

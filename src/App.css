@@ -8,6 +8,10 @@ body {
     color: #000000;
 }
 
+h2 {
+    margin: 0;
+}
+
 #root {
     min-width: 18rem;
     padding: 1.5rem;

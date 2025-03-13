@@ -20,3 +20,9 @@ export const AUDIO_COMP_BUTTON = 'crs-compressor-btn';
 
 // 자동 UP 누르기
 export const USE_AUTO_UP = 'crs-use-auto-up';
+
+// 빨리감기
+export const FAST_FORWARD_BUTTON = 'crs-fast-btn';
+
+// 통계
+export const STATS_PLAYER = 'crs-stats-player';

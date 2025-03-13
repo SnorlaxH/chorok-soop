@@ -16,14 +16,12 @@ export const injectPostPage = () => {
                 const submitEvent = (event: KeyboardEvent) => {
                     const { target } = event;
                     if (target instanceof HTMLElement) {
-                        console.log(target.id);
                         if (event.ctrlKey && event.key === 'Enter') {
                             const section = target.closest(COMMENT_SECTION);
                             if (COMMENT_WRITE === target.id) {
                                 section?.querySelector(COMMENT_SUBMIT)?.toElement().click();
                             }
                             else if (target.id.includes(COMMENT_MODIFY)) {
-                                console.log(section);
                                 section?.querySelector(COMMENT_SUBMIT)?.toElement().click();
                             }
                         }

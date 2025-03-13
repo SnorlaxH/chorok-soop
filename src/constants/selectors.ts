@@ -23,6 +23,13 @@ export const INPUT_UI_LIST = [
     'write_area',
 ]
 
+export const SIGN_IN_LIST = [
+    'szUid',
+    'szPassword',
+    'uid',
+    'password'
+]
+
 export const COMMENT_WRITE = 'comment_write_form_input';
 
 export const COMMENT_SECTION = '.cmmt_inp';
@@ -35,3 +42,5 @@ export const EL_CAPTURE_BUTTON = 'crs-capture-btn'
 export const EL_DOWNLOAD_BUTTON = 'crs-download-btn';
 export const EL_COMP_BUTTON = 'crs-compressor-btn';
 export const EL_LIKE_BUTTON = '.depend_item button#like';
+export const EL_FAST_BUTTON = 'crs-fast-btn'
+export const EL_STATS_BUTTON = 'crs-stats-btn'

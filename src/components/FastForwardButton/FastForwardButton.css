@@ -1,0 +1,17 @@
+.crs-fastforward-btn {
+    position: relative;
+    color: #FFFFFF;
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z'/%3E%3C/svg%3E") 50% 50% no-repeat;
+    background-size: 100% 100%;
+}
+
+.crs-fastforward-btn .tooltip {
+    display: none;
+}
+
+.crs-fastforward-btn:hover .tooltip {
+    display: block !important;
+}

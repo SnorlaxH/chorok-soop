@@ -1,52 +1,50 @@
-// import { styled } from '@mui/material/styles';
-import CropIcon from '@mui/icons-material/Crop';
-import React from 'react';
-import { INPUT_UI_LIST, VIDEO_PLAYER } from '../../constants/selectors';
-import { save2png } from '../../utils/dom';
+// import { styled } from '@mui/material/styles'
+import CropIcon from '@mui/icons-material/Crop'
+import React from 'react'
+import { INPUT_UI_LIST, SIGN_IN_LIST, VIDEO_PLAYER } from '../../constants/selectors'
+import { save2png } from '../../utils/dom'
 
 import './CaptureButton.css'
-import { isCatch } from '../../page/vod';
+import { isCatch } from '../../page/vod'
 
 export default function CaptureButton() {
     React.useEffect(() => {
         const captureEvent = (event: KeyboardEvent) => {
-            const { target } = event;
-            console.log(target)
+            const { target } = event
             if (target instanceof HTMLElement) {
-                if (!INPUT_UI_LIST.includes(target.className) && !event.ctrlKey) {
+                if (!INPUT_UI_LIST.includes(target.className) && !SIGN_IN_LIST.includes(target.id) && !event.ctrlKey) {
                     // T: 캡처
                     if (event.key === 't' || event.key === 'T') {
-                        console.log('capture');
-                        captureVideo();
+                        captureVideo()
                     }
                 }
             }
         }
 
-        document.addEventListener('keydown', captureEvent);
+        document.addEventListener('keydown', captureEvent)
         return () => {
-            document.removeEventListener('keydown', captureEvent);
-        };
-    }, []);
+            document.removeEventListener('keydown', captureEvent)
+        }
+    }, [])
 
     const captureVideo = (e?: React.MouseEvent<HTMLButtonElement>) => {
-        e?.preventDefault();
+        e?.preventDefault()
 
         try {
-            const video = (isCatch() ? document.querySelector('video#video_p') : document.querySelector(VIDEO_PLAYER)) as HTMLVideoElement;
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            const context = canvas.getContext('2d');
+            const video = (isCatch() ? document.querySelector('video#video_p') : document.querySelector(VIDEO_PLAYER)) as HTMLVideoElement
+            const canvas = document.createElement('canvas')
+            canvas.width = video.videoWidth
+            canvas.height = video.videoHeight
+            const context = canvas.getContext('2d')
 
-            if (!context) return;
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            if (!context) return
+            context.drawImage(video, 0, 0, canvas.width, canvas.height)
 
-            const imageDataURL = canvas.toDataURL('image/png');
-            const id = document.URL.replace('https://play.sooplive.co.kr/', '').replace('https://dashboard.sooplive.co.kr/', '').replace('https://vod.sooplive.co.kr/', '').split('/'[0]);
-            save2png(imageDataURL, `chrok_soop_${id}_${new Date().toStr('yyyyMMdd_HHmmsszzz')}.png`);
+            const imageDataURL = canvas.toDataURL('image/png')
+            const id = document.URL.replace('https://play.sooplive.co.kr/', '').replace('https://dashboard.sooplive.co.kr/', '').replace('https://vod.sooplive.co.kr/', '').split('/'[0])
+            save2png(imageDataURL, `chrok_soop_${id}_${new Date().toStr('yyyyMMdd_HHmmsszzz')}.png`)
         } catch (e) {
-            console.warn(e);
+            console.warn(e)
         }
     }
 
