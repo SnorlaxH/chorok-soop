@@ -6,6 +6,7 @@ import { getChatAreaObserver, getNoticeAreaObserver } from "../utils/observe"
 import CaptureButton from '../components/CaptureButton/CaptureButton.tsx'
 import AudioCompressorButton from '../components/AudioCompressorButton/AudioCompressorButton.tsx'
 import FastForwardButton from '../components/FastForwardButton/FastForwardButton.tsx'
+import StatsInfo from '../components/StatsInfo/StatsInfo.tsx'
 
 let invlAutoLike: number | null = null
 
@@ -120,14 +121,17 @@ export const injectLivePage = async () => {
                 $FastForwardButton.id = EL_FAST_FORWARD_BUTTON
                 $ctrl?.insertBefore($FastForwardButton, $volume)
                 createReactElement($FastForwardButton, FastForwardButton)
-
-                console.log($volume, $FastForwardButton)
             }
 
-            if(res[STATS_PLAYER] &&
+            if (res[STATS_PLAYER] &&
                 !document.getElementById(EL_STATS_BUTTON)
             ) {
-
+                const $setting_list = document.querySelector('.setting_list>ul')
+                const $StatsList = document.createElement('li')
+                $StatsList.id = EL_STATS_BUTTON
+                $setting_list?.append($StatsList)
+                createReactElement($StatsList, StatsInfo)
+                console.log($setting_list, $StatsList)
             }
         }
     )

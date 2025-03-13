@@ -1,0 +1,8 @@
+.crs-stats-btn{
+    justify-content: space-between;
+    padding: 0 16px!important;
+}
+
+.crs-stats-btn::after {
+    content: none!important;
+}

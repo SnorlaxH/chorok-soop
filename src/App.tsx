@@ -80,8 +80,8 @@ function App() {
 
                     <Checkbox id={STATS_PLAYER}>
                         <div className="config-item">
-                            <p className="item-title">통계 활성화</p>
-                            <p className="item-desc">설정 메뉴에 라이브 통계를 활성화 합니다.</p>
+                            <p className="item-title">지연 시간 활성화</p>
+                            <p className="item-desc">설정 메뉴에 지연 시간을 표시 합니다.</p>
                         </div>
                     </Checkbox>
                 </div>
