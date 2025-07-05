@@ -1,6 +1,6 @@
 import '../utils/prototype.ts'
-import { CHAT_LIST_AREA, CHAT_NOTICE, CHAT_WRITE_AREA, EL_CAPTURE_BUTTON, EL_COMP_BUTTON, NOT_BROADCAST, PLAYER_BUTTONS, EL_LIKE_BUTTON, EL_FAST_BUTTON as EL_FAST_FORWARD_BUTTON, EL_STATS_BUTTON } from "../constants/selectors"
-import { AUDIO_COMP_BUTTON, CAPTURE_BUTTON, CHAT_URL_LINK, COPY_PASTE, DONATE_IMAGE_HIDE, DONATE_IMAGE_SAVE, USE_AUTO_UP, FAST_FORWARD_BUTTON, STATS_PLAYER } from "../constants/storage"
+import { CHAT_LIST_AREA, CHAT_NOTICE, CHAT_WRITE_AREA, EL_CAPTURE_BUTTON, EL_COMP_BUTTON, NOT_BROADCAST, PLAYER_BUTTONS, EL_LIKE_BUTTON, EL_FAST_BUTTON as EL_FAST_FORWARD_BUTTON, EL_STATS_BUTTON, VOD_LIST_AREA, BLIND_AREA } from "../constants/selectors"
+import { AUDIO_COMP_BUTTON, CAPTURE_BUTTON, CHAT_URL_LINK, COPY_PASTE, DONATE_IMAGE_HIDE, DONATE_IMAGE_SAVE, USE_AUTO_UP, FAST_FORWARD_BUTTON, STATS_PLAYER, DISABLE_AUTO_PLAY_VOD } from "../constants/storage"
 import { createReactElement, injectScript, waitingElement } from "../utils/dom"
 import { getChatAreaObserver, getNoticeAreaObserver } from "../utils/observe"
 import CaptureButton from '../components/CaptureButton/CaptureButton.tsx'
@@ -52,7 +52,7 @@ export const injectLivePage = async () => {
     }
 
     chrome.storage.local.get(
-        [COPY_PASTE, CAPTURE_BUTTON, CHAT_URL_LINK, DONATE_IMAGE_SAVE, DONATE_IMAGE_HIDE, AUDIO_COMP_BUTTON, FAST_FORWARD_BUTTON, STATS_PLAYER],
+        [COPY_PASTE, CAPTURE_BUTTON, CHAT_URL_LINK, DONATE_IMAGE_SAVE, DONATE_IMAGE_HIDE, AUDIO_COMP_BUTTON, FAST_FORWARD_BUTTON, STATS_PLAYER, DISABLE_AUTO_PLAY_VOD],
         (res) => {
             const $btn_list = document.querySelector(PLAYER_BUTTONS)
 
@@ -61,11 +61,28 @@ export const injectLivePage = async () => {
                 document.querySelector(CHAT_WRITE_AREA)
             ) {
                 injectScript("inject.js")
+
+                window.postMessage({
+                    source: 'from-extension',
+                    action: 'crs_copyPaste',
+                }, '*');
+            }
+
+            if (res[DISABLE_AUTO_PLAY_VOD] &&
+                document.querySelector(VOD_LIST_AREA)
+            ) {
+                injectScript("inject.js")
+
+                window.postMessage({
+                    source: 'from-extension',
+                    action: 'crs_autoPlayVod',
+                }, '*');
             }
 
             if (
                 res[CAPTURE_BUTTON] &&
-                !document.getElementById(EL_CAPTURE_BUTTON)
+                !document.getElementById(EL_CAPTURE_BUTTON) &&
+                (document.querySelector(BLIND_AREA) as HTMLElement).style.display === 'none'
             ) {
                 const $setting_box = document.querySelector('.setting_box')
                 const $CaptureButton = document.createElement("div")

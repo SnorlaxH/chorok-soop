@@ -1,7 +1,7 @@
 // import { styled } from '@mui/material/styles'
 import CropIcon from '@mui/icons-material/Crop'
 import React from 'react'
-import { INPUT_UI_LIST, SIGN_IN_LIST, VIDEO_PLAYER } from '../../constants/selectors'
+import { BLIND_AREA, INPUT_UI_LIST, SIGN_IN_LIST, VIDEO_PLAYER } from '../../constants/selectors'
 import { save2png } from '../../utils/dom'
 
 import './CaptureButton.css'
@@ -12,7 +12,10 @@ export default function CaptureButton() {
         const captureEvent = (event: KeyboardEvent) => {
             const { target } = event
             if (target instanceof HTMLElement) {
-                if (!INPUT_UI_LIST.includes(target.className) && !SIGN_IN_LIST.includes(target.id) && !event.ctrlKey) {
+                if (!INPUT_UI_LIST.includes(target.className) &&
+                    !SIGN_IN_LIST.includes(target.id) &&
+                    !event.ctrlKey && target.getAttribute('type') !== 'password' &&
+                    (document.querySelector(BLIND_AREA) as HTMLElement).style.display === 'none') {
                     // T: 캡처
                     if (event.key === 't' || event.key === 'T') {
                         captureVideo()

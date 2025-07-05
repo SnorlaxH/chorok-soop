@@ -7,6 +7,7 @@ export const CATCH_LAYOUT_WRAP = '.catch_webplayer_wrap';
 export const VIDEO_PLAYER = '.af_video';;
 
 export const NOT_BROADCAST = '#notBroadingList';
+export const BLIND_AREA = '.video_blind';
 
 export const PLAYER_BUTTONS = '.player_ctrlBox .ctrlBox .right_ctrl';
 
@@ -15,6 +16,8 @@ export const CHAT_NOTICE = '.chat_notice';
 export const CHAT_LIST_AREA = '#chat_area';
 
 export const CHAT_WRITE_AREA = '#write_area';
+
+export const VOD_LIST_AREA = '#list_area';
 
 export const DONATION_COTAINER = 'donation-container';
 

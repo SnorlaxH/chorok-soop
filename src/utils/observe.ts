@@ -170,3 +170,25 @@ export const getPageChangeObserver = (fn: Function) => {
     };
     return new MutationObserver(callback);
 }
+
+export const getMoreLayerObserver = () => {
+    const addHighlightButton = (node: any, comment: any) => {
+        console.log(node, comment);
+    }
+
+    const callback = (mutationList: MutationRecord[]) => {
+        mutationList.forEach(mutation => {
+            mutation.addedNodes.forEach((node: any, index: number) => {
+                if (node.classList && node.classList.contains('more-layer')) {
+                    const comment = node.closest('li');
+                    console.log(index);
+                    if (comment) {
+                        addHighlightButton(node, comment);
+                    }
+                }
+            })
+        })
+    }
+
+    return new MutationObserver(callback);
+}

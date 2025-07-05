@@ -27,9 +27,12 @@ export async function waitingElement(
 }
 
 export const injectScript = (src: string) => {
-    let el = document.createElement("script");
-    el.src = chrome.runtime.getURL(src);
-    document.documentElement.appendChild(el);
+    if (!document.documentElement.querySelector(`#__crs_inject__`)) {
+        const el = document.createElement("script");
+        el.id = '__crs_inject__'
+        el.src = chrome.runtime.getURL(src);
+        document.documentElement.appendChild(el);
+    }
 }
 
 export const save2png = (url: string, name: string) => {

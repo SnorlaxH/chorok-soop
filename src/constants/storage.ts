@@ -26,3 +26,9 @@ export const FAST_FORWARD_BUTTON = 'crs-fast-btn';
 
 // 통계
 export const STATS_PLAYER = 'crs-stats-player';
+
+// VOD 자동 재생 비활성화
+export const DISABLE_AUTO_PLAY_VOD = 'crs-disable-auto-play-vod';
+
+// 하이라이트 댓글 버튼
+export const COMMENT_LINK_BUTTON = 'crs-comment-link'

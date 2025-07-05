@@ -13,6 +13,8 @@ import {
     USE_AUTO_UP,
     FAST_FORWARD_BUTTON,
     STATS_PLAYER,
+    DISABLE_AUTO_PLAY_VOD,
+    COMMENT_LINK_BUTTON
 } from './constants/storage';
 
 const APP_VER = `ver. ${chrome.runtime.getManifest().version}`
@@ -84,6 +86,13 @@ function App() {
                             <p className="item-desc">설정 메뉴에 지연 시간을 표시 합니다.</p>
                         </div>
                     </Checkbox>
+
+                    <Checkbox id={DISABLE_AUTO_PLAY_VOD}>
+                        <div className="config-item">
+                            <p className="item-title">VOD 자동 재생 끄기</p>
+                            <p className="item-desc">방종 후 VOD(다시보기) 자동 재생을 비활성화 합니다.</p>
+                        </div>
+                    </Checkbox>
                 </div>
 
                 <hr />
@@ -108,6 +117,13 @@ function App() {
                             <p className="item-title">후원 이미지 저장</p>
                             <p className="item-desc">후원 채팅을 좌클릭 해 이미지로 저장합니다.</p>
                             <p className="item-desc">이미지 처리에 시간이 소요됩니다.</p>
+                        </div>
+                    </Checkbox>
+
+                    <Checkbox id={COMMENT_LINK_BUTTON}>
+                        <div className="config-item">
+                            <p className="item-title">하이라이트 댓글 복사버튼 활성화</p>
+                            <p className="item-desc">댓글에 하이라이트 댓글 복사 버튼을 추가합니다.</p>
                         </div>
                     </Checkbox>
                 </div>
