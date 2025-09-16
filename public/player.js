@@ -6,6 +6,24 @@ const convertBtn = document.getElementById('convertBtn');
 
 const { createFFmpeg, fetchFile } = FFmpeg;
 
+function buildTrackFile(trackBuf) {
+    if (!trackBuf.init) {
+        throw new Error('Init segment missing for track');
+    }
+    const initSize = trackBuf.init.byteLength;
+    const total = initSize + trackBuf.totalSize;
+    const out = new Uint8Array(total);
+    let offset = 0;
+    out.set(trackBuf.init, offset);
+    offset += initSize;
+    for (const seg of trackBuf.segments) {
+        out.set(seg.buffer, offset);
+        offset += seg.buffer.byteLength;
+    }
+    return out;
+}
+
+
 const ffmpeg = createFFmpeg({
     corePath: chrome.runtime.getURL("ffmpeg-core.js"),
     wasmPath: chrome.runtime.getURL("ffmpeg-core.wasm"),
@@ -13,22 +31,40 @@ const ffmpeg = createFFmpeg({
     mainName: 'main'
 });
 
-async function runFFmpeg(buffer, outputFileName) {
-    if (ffmpeg.isLoaded()) {
-        await ffmpeg.exit();
+async function downloadMergedMp4(tracks, outputFileName) {
+    if (!ffmpeg.isLoaded()) {
+        await ffmpeg.load();
     }
 
-    await ffmpeg.load();
+    // 트랙별 바이너리 구축
+    const videoBytes = buildTrackFile(tracks.video);
+    await ffmpeg.FS('writeFile', 'video.mp4', videoBytes);
 
-    await ffmpeg.FS('writeFile', 'input.ts', new Uint8Array(buffer));
-    const commandStr = `-i input.ts -c copy output.mp4`
+    // 오디오 트랙이 있다면
+    const hasAudio = tracks.audio.init || tracks.audio.segments.length;
+    if (hasAudio) {
+        const audioBytes = buildTrackFile(tracks.audio);
+        await ffmpeg.FS('writeFile', 'audio.mp4', audioBytes);
+    }
 
-    await ffmpeg.run(...commandStr.split(' '));
+    // remux (copy) → 하나의 MP4
+    // 주의: 일부 스트림에선 타임스케일/시작 PTS 불일치로 sync 어긋날 수 있음 → -fflags +genpts 시도
+    const args = [
+        '-i', 'video.mp4',
+        '-i', 'audio.mp4',
+        '-c', 'copy',
+        '-map', '0:v:0',
+        '-map', '1:a:0?',
+        '-movflags', 'faststart',
+        '-fflags', '+genpts',
+        'output.mp4'
+    ];
 
 
-    const data = await ffmpeg.FS('readFile', 'output.mp4');
-    console.error(data)
-    const blob = new Blob([data.buffer]);
+    await ffmpeg.run(...args);
+
+    const data = ffmpeg.FS('readFile', 'output.mp4');
+    const blob = new Blob([data.buffer], { type: 'video/mp4' });
 
     downloadFile(blob, outputFileName);
 }
@@ -43,13 +79,13 @@ const processFragmentsWithFFmpeg = async (fragments, outputFileName) => {
 
     // 모든 .ts 세그먼트를 가상 파일 시스템에 기록
     for (let i = 0; i < fileIndex; i++) {
-        await ffmpeg.FS('writeFile', `fragment${i}.ts`, new Uint8Array(fragments[i]));
+        await ffmpeg.FS('writeFile', `fragment${i}.mp4`, new Uint8Array(fragments[i]));
     }
 
     // inputs.txt 파일 생성: 모든 .ts 파일을 나열
     let inputsContent = '';
     for (let i = 0; i < fileIndex; i++) {
-        inputsContent += `file 'fragment${i}.ts'\n`;
+        inputsContent += `file 'fragment${i}.mp4'\n`;
     }
     await ffmpeg.FS('writeFile', 'inputs.txt', inputsContent);
 
@@ -85,28 +121,68 @@ if (Hls.isSupported()) {
     })
     const m3u8Url = url.split('#')[1]
 
+    const tracks = {
+        video: { init: undefined, segments: [], totalSize: 0 },
+        audio: { init: undefined, segments: [], totalSize: 0 },
+        total: 0,
+    };
+
     hls.loadSource(m3u8Url)
     hls.attachMedia(elVideo)
-    // M3U8 매니페스트가 파싱되면 비디오 재생 시작
-    hls.on(Hls.Events.MANIFEST_PARSED, function () {
-        // video.play();
-    });
 
-    // MP4Box.js 초기화
-    const mp4Buffer = []
+    function classifyFrag(frag) {
+        // hls.js에서 audio/main 구분
+        if (frag.type === 'audio') return 'audio';
+        return 'video'; // 'main'을 video로 취급 (자막 등 추가 트랙은 추가 처리)
+    }
+
     // HLS.js에서 로드된 비디오 프래그먼트를 MP4Box.js에 추가
     hls.on(Hls.Events.FRAG_LOADED, async function (event, data) {
         // await runFFmpeg(data.payload, 'output.mp4')
-        const payload = data.payload
-        mp4Buffer.push(payload)
+        const frag = data.frag;
+        const track = classifyFrag(frag);
+        const payload = new Uint8Array(data.payload); // ArrayBuffer → Uint8Array
+
+        console.log('[FRAG_LOADED]', data);
+
+        // init 세그먼트 판별
+        const isInit =
+            frag.sn === 'initSegment' ||
+            frag.sn === -1 ||
+            (frag.relurl && /init|map|mp4init|cmfi/i.test(frag.relurl));
+        console.log('[FRAG_LOADED] - isInit', frag.sn, frag.relurl)
+        if (isInit) {
+            // 기존 init 덮어쓰기 (가장 최근 레벨 선택)
+            tracks[track].init = payload;
+            console.log(`[${track}] init segment captured (${payload.byteLength} bytes)`);
+            return;
+        }
+        // init 세그먼트 없는 경우 프래그먼트에서 가져옴
+        if (!tracks[track].init) {
+            const { initSegment } = frag;
+            if (initSegment && initSegment.data && initSegment.data.length) {
+                tracks[track].init = initSegment.data;
+            }
+        }
+
+        // 일반 세그먼트
+        tracks[track].segments.push({
+            sn: frag.sn,
+            ptsStart: frag.start,
+            duration: frag.duration,
+            buffer: payload,
+        });
+        tracks[track].totalSize += payload.byteLength;
     });
 
     // 변환 버튼 클릭 시 MP4 파일 생성 및 다운로드
     convertBtn.addEventListener('click', async function () {
-        if (mp4Buffer.length) {
-            console.log(mp4Buffer)
-            await processFragmentsWithFFmpeg(mp4Buffer, `${document.title}.mp4`)
+        // 최소 세그먼트 도착 검사
+        if (!tracks.video.init && tracks.video.segments.length === 0) {
+            alert('아직 비디오 세그먼트가 수집되지 않았습니다.');
+            return;
         }
+        await downloadMergedMp4(tracks, `${document.title}.mp4`)
     });
 } else if (elVideo.canPlayType('application/vnd.apple.mpegurl')) {
     // 브라우저가 HLS를 네이티브로 지원하는 경우 (예: Safari)

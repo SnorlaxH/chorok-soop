@@ -5,7 +5,7 @@ function crs_getEmoji(el) {
 function fn_crsCopyPaste() {
     var crs_copyPaste = setInterval(() => {
         if (window.liveView) {
-            $('#write_area').unbind('cut copy paste').bind('cut copy', (e) => {
+            $('#write_area, #auqa_voice_textarea, #adb_auqa_voice_textarea').unbind('cut copy paste').bind('cut copy', (e) => {
                 e.preventDefault();
 
                 const { currentTarget } = e;

@@ -1,9 +1,9 @@
 import { COMMENT_LINK_BUTTON, COMMENT_SHORTCUT } from '../constants/storage.ts';
 import '../utils/prototype.ts';
-import { COMMENT_MODIFY, COMMENT_SUBMIT, COMMENT_WRITE, COMMENT_SECTION } from '../constants/selectors.ts';
+import { COMMENT_SUBMIT, COMMENT_SECTION } from '../constants/selectors.ts';
 
 export const isPostPage = () => {
-    return document.URL.includes("ch.sooplive.co.kr") && document.URL.includes('/post/');
+    return document.URL.includes("sooplive.co.kr/station/") && document.URL.includes('/post/');
 }
 
 export const injectPostPage = () => {
@@ -17,22 +17,21 @@ export const injectPostPage = () => {
                     const { target } = event;
                     if (target instanceof HTMLElement) {
                         if (event.ctrlKey && event.key === 'Enter') {
+                            event.preventDefault();
+                            event.stopImmediatePropagation();
+
                             const section = target.closest(COMMENT_SECTION);
-                            if (COMMENT_WRITE === target.id) {
-                                section?.querySelector(COMMENT_SUBMIT)?.toElement().click();
-                            }
-                            else if (target.id.includes(COMMENT_MODIFY)) {
-                                section?.querySelector(COMMENT_SUBMIT)?.toElement().click();
-                            }
+                            section?.querySelector(COMMENT_SUBMIT)?.toElement().click();
+                            console.log(event);
                         }
                     }
                 }
 
-                document.addEventListener('keydown', submitEvent);
+                document.addEventListener('keydown', submitEvent, { capture: true });
             }
 
             if (res[COMMENT_LINK_BUTTON]) {
-                const pattern = /^https:\/\/ch\.sooplive\.co\.kr\/([^\/]+)\/post\/([^\/#?]+)(?:[#?].*)?$/;
+                const pattern = /^https:\/\/www\.sooplive\.co\.kr\/station\/([^\/]+)\/post\/([^\/#?]+)(?:[#?].*)?$/;
                 const match = document.URL.match(pattern)
 
                 if (!match) {
@@ -43,6 +42,38 @@ export const injectPostPage = () => {
                 const streamer = match[1];
                 const title_no = match[2];
 
+                // 스타일 추가
+                const crsStyle = document.createElement('style');
+                crsStyle.innerHTML = `
+                    .crs-comment-button {
+                        display: flex;
+                        color: #00786f;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                    .crs-comment-button:before {
+                        content: "";
+                        display: block;
+                        flex: 0 0 auto;
+                        background: var(--soop-mode-fill-fillTertiary);
+                        width: 3px;
+                        height: 3px;
+                        border-radius: 50%;
+                    }
+                    .crs-comment-button button {
+                        display: flex;
+                        height: 32px;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 4px;
+                        padding: 0 8px;
+                        color: #00786f;
+                    }
+                    .crs-comment-button span {
+                        font-size: var(--soop-typographyPrimitives-body-b_sm_r-fontSize)
+                    }
+                `
+                document.head.appendChild(crsStyle);
 
                 setTimeout(async () => {
                     const comments = await fetchComments(streamer, title_no);
@@ -89,7 +120,7 @@ const fetchComments = async (streamer: string, title_no: string): Promise<Array<
 }
 
 const addHighlightButton = (commentList: Array<any>) => {
-    const elComments = document.querySelectorAll('ul.cmmt-list > li')
+    const elComments = document.querySelectorAll('ul[class^=CommentList_comment] > li[class^=CommentItem_commentInputElement]')
 
     if (!elComments.length) {
         console.error('현재 페이지에서 댓글을 탐색 실패')
@@ -97,32 +128,27 @@ const addHighlightButton = (commentList: Array<any>) => {
     }
 
     elComments.forEach((el) => {
-        const autorWrap = el.querySelector('.cmmt-header .autor_wrap');
-        const util = el.querySelector('.cmmt-header .util');
-        const cmmtBtn = el.querySelector('.cmmt-btn');
+        const commentInfoWrap = el.querySelector('[class^=CommentItem_commentInfo]');
+        const reactionWrap = el.querySelector('[class^=CommentItem_reaction]');
 
-        if (autorWrap && util) {
-            const elNickname: HTMLElement | null = autorWrap.querySelector('div > button > p');
-            const elTime: HTMLElement | null = autorWrap.querySelector('div > span');
+        if (commentInfoWrap) {
+            const elNickname: HTMLElement | null = commentInfoWrap.querySelector('div[class^=CommentItem_nickname] > div > div');
+            const elTime: HTMLElement | null = commentInfoWrap.querySelector('div[class^=CommentItem_registerDate]');
 
             const nickname = elNickname ? elNickname.innerText : '';
             const time = elTime ? elTime.innerText : '';
 
             const filter: any = commentList.find((r: any) => r.user_nick === nickname.split('(')[0] && r.reg_date === time)
-
+            console.log(filter);
             if (filter) {
-                const button = document.createElement('button');
+                const button = document.createElement('div');
+                button.className = 'crs-comment-button';
                 button.innerHTML = `
-                        <div style="display: block;position: absolute;top: 50%;margin-top: -5px;left: 0;width: 1px;height: 10px;background-color: #e2e3e4;"></div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="76" height="28" viewBox="0 0 76 28" fill="none">
-                            <g transform="translate(6, 5) scale(0.9)" stroke="#00786f" fill="none">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.7736 8.7256a1.8 1.8 0 1 0 0 1.7488m0-1.7488c.144 .2592 .2264 .5568 .2264 .8744s-.0824 .616-.2264 .8744 m0-1.7488 7.6528-4.2512m-7.6528 6 7.6528 4.2512m0 0a1.8 1.8 0 1 0 3.148 1.7488 1.8 1.8 0 0 0-3.148-1.7488 Zm0-10.2512a1.8 1.8 0 1 0 3.1464-1.748 1.8 1.8 0 0 0-3.1464 1.748Z" />
-                            </g>
-                            <text x="27" y="18" fill="#00786f" font-family="sans-serif" font-size="11">링크 공유</text>
-                        </svg>`;
-                button.style.position = 'relative';
-                button.style.padding = '2px 4px';
-                button.style.cursor = 'pointer';
+                    <button>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="null" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:16px; heigth:16px;"> <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" /> </svg>
+                        <span>링크 공유</span>
+                    </button>
+                `;
                 button.dataset.comment = filter.p_comment_no;
 
                 button.addEventListener('click', function () {
@@ -146,7 +172,7 @@ const addHighlightButton = (commentList: Array<any>) => {
                     });
                 });
 
-                cmmtBtn?.appendChild(button);
+                reactionWrap?.appendChild(button);
             }
         }
     })

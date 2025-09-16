@@ -21,25 +21,24 @@ export const VOD_LIST_AREA = '#list_area';
 
 export const DONATION_COTAINER = 'donation-container';
 
-export const INPUT_UI_LIST = [
+export const INPUT_UI_CLS_LIST = [
     'voice_message',
     'write_area',
 ]
 
-export const SIGN_IN_LIST = [
+export const INPUT_UI_ID_LIST = [
     'szUid',
     'szPassword',
     'uid',
-    'password'
+    'password',
+    'starballoon-input',
+    'auqa_voice_textarea',
+    'adb_auqa_voice_textarea'
 ]
 
-export const COMMENT_WRITE = 'comment_write_form_input';
+export const COMMENT_SECTION = 'div[class^=CommentWriteForm_commentInputContent]';
 
-export const COMMENT_SECTION = '.cmmt_inp';
-
-export const COMMENT_MODIFY = 'comment_modify_form_'
-
-export const COMMENT_SUBMIT = 'button[type=submit]';
+export const COMMENT_SUBMIT = 'div[class^=CommentWriteForm_actionButton] button[class*=ButtonCommon-module__defaultPrimary]';
 
 export const EL_CAPTURE_BUTTON = 'crs-capture-btn'
 export const EL_DOWNLOAD_BUTTON = 'crs-download-btn';
