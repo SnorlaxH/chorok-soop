@@ -15,11 +15,14 @@ export const injectPostPage = () => {
             if (res[COMMENT_SHORTCUT]) {
                 const submitEvent = (event: KeyboardEvent) => {
                     const { target } = event;
+                    console.log(target)
                     if (target instanceof HTMLElement) {
+                        console.log(event.ctrlKey, event.key)
                         if (event.ctrlKey && event.key === 'Enter') {
                             event.preventDefault();
                             event.stopImmediatePropagation();
 
+                            console.log('ㅅㄷㄴㅅ')
                             const section = target.closest(COMMENT_SECTION);
                             section?.querySelector(COMMENT_SUBMIT)?.toElement().click();
                             console.log(event);
