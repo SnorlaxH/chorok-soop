@@ -57,9 +57,6 @@ const whenPageLoaded = setInterval(() => {
                 console.warn(e);
             }
         }
-        else if ($catchWrap) {
-            injectVodPage()
-        }
         clearInterval(whenPageLoaded);
     }
 }, 500);

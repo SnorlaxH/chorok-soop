@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "쵸록 숲",
     "description": "SOOP 편의기능 서비스",
-    "version": "1.2.5",
+    "version": "1.2.9",
     "icons": {
         "16": "icon16.png",
         "32": "icon32.png",
@@ -15,7 +15,7 @@
     ],
     "host_permissions": [
         "*://*.afreecatv.com/*",
-        "*://*.sooplive.co.kr/*"
+        "*://*.sooplive.com/*"
     ],
     "background": {
         "service_worker": "src/background.ts",
@@ -24,7 +24,7 @@
     "content_scripts": [
         {
             "matches": [
-                "*://*.sooplive.co.kr/*"
+                "*://*.sooplive.com/*"
             ],
             "js": [
                 "src/content.tsx"
@@ -40,7 +40,7 @@
                 "ffmpeg-core.worker.js"
             ],
             "matches": [
-                "*://*.sooplive.co.kr/*"
+                "*://*.sooplive.com/*"
             ]
         }
     ],

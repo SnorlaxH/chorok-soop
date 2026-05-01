@@ -32,3 +32,7 @@ export const DISABLE_AUTO_PLAY_VOD = 'crs-disable-auto-play-vod';
 
 // 하이라이트 댓글 버튼
 export const COMMENT_LINK_BUTTON = 'crs-comment-link'
+
+// 대시보드 채팅창 설정
+export const DASHBOARD_CHAT_SETTING = 'crs-dashboard-chat-setting';
+export const DASHBOARD_CHAT_FONT_SIZE = 'crs-dashboard-chat-font-size';

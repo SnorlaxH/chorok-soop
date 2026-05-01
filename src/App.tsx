@@ -14,7 +14,7 @@ import {
     FAST_FORWARD_BUTTON,
     STATS_PLAYER,
     DISABLE_AUTO_PLAY_VOD,
-    COMMENT_LINK_BUTTON
+    COMMENT_LINK_BUTTON,
 } from './constants/storage';
 
 const APP_VER = `ver. ${chrome.runtime.getManifest().version}`

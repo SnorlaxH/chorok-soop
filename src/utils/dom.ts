@@ -3,6 +3,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
+export const existElement = (selector: string): boolean => {
+    return document.querySelector(selector) !== null;
+}
+
 export const createReactElement = (
     root: Element,
     element: () => JSX.Element

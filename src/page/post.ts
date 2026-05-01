@@ -3,7 +3,7 @@ import '../utils/prototype.ts';
 import { COMMENT_SUBMIT, COMMENT_SECTION } from '../constants/selectors.ts';
 
 export const isPostPage = () => {
-    return document.URL.includes("sooplive.co.kr/station/") && document.URL.includes('/post/');
+    return document.URL.includes("sooplive.com/station/") && document.URL.includes('/post/');
 }
 
 export const injectPostPage = () => {
@@ -22,7 +22,6 @@ export const injectPostPage = () => {
                             event.preventDefault();
                             event.stopImmediatePropagation();
 
-                            console.log('ㅅㄷㄴㅅ')
                             const section = target.closest(COMMENT_SECTION);
                             section?.querySelector(COMMENT_SUBMIT)?.toElement().click();
                             console.log(event);
@@ -34,7 +33,7 @@ export const injectPostPage = () => {
             }
 
             if (res[COMMENT_LINK_BUTTON]) {
-                const pattern = /^https:\/\/www\.sooplive\.co\.kr\/station\/([^\/]+)\/post\/([^\/#?]+)(?:[#?].*)?$/;
+                const pattern = /^https:\/\/www\.sooplive\.com\/station\/([^\/]+)\/post\/([^\/#?]+)(?:[#?].*)?$/;
                 const match = document.URL.match(pattern)
 
                 if (!match) {
@@ -91,7 +90,7 @@ const fetchComments = async (streamer: string, title_no: string): Promise<Array<
     let commentList = Array<any>();
     let page = 1;
     let maxPage = 1;
-    const FETCH_COMMENT = `https://chapi.sooplive.co.kr/api/`
+    const FETCH_COMMENT = `https://chapi.sooplive.com/api/`
     try {
         while (page <= maxPage) {
             const params = {

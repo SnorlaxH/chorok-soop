@@ -8,7 +8,7 @@ import AudioCompressorButton from '../components/AudioCompressorButton/AudioComp
 import FastForwardButton from '../components/FastForwardButton/FastForwardButton.tsx'
 import StatsInfo from '../components/StatsInfo/StatsInfo.tsx'
 
-let invlAutoLike: number | null = null
+let invlAutoLike: NodeJS.Timeout | null = null
 
 const fnAutoLike = () => {
     const elLikeBtn = document.querySelector(EL_LIKE_BUTTON) as HTMLButtonElement
@@ -16,18 +16,22 @@ const fnAutoLike = () => {
 }
 
 export const isLivePage = () => {
-    return document.URL.includes("play.sooplive.co.kr") || document.URL.includes('play.afreecatv.com')
+    return document.URL.includes("play.sooplive.com") || document.URL.includes('play.afreecatv.com')
 }
 
 export const injectAutoLike = async () => {
     chrome.storage.local.get(
         [USE_AUTO_UP],
         (res) => {
-            if (res[USE_AUTO_UP] &&
-                document.querySelector(EL_LIKE_BUTTON)
-            ) {
+            if (res[USE_AUTO_UP]) {
                 setTimeout(() => {
-                    fnAutoLike()
+                    const readyElInvl = setInterval(() => {
+                        const elLikeBtn = document.querySelector(EL_LIKE_BUTTON) as HTMLButtonElement
+                        if (elLikeBtn) {
+                            fnAutoLike()
+                            clearInterval(readyElInvl)
+                        }
+                    }, 1000)
                 }, 3000)
 
                 if (invlAutoLike != null) {
@@ -39,6 +43,11 @@ export const injectAutoLike = async () => {
                         fnAutoLike()
                     }
                 }, 1000)
+            }
+            else {
+                if (invlAutoLike != null) {
+                    clearInterval(invlAutoLike)
+                }
             }
         })
 }
@@ -62,10 +71,12 @@ export const injectLivePage = async () => {
             ) {
                 injectScript("inject.js")
 
-                window.postMessage({
-                    source: 'from-extension',
-                    action: 'crs_copyPaste',
-                }, '*');
+                setTimeout(() => {
+                    window.postMessage({
+                        source: 'from-extension',
+                        action: 'crs_copyPaste',
+                    }, '*');
+                }, 500);
             }
 
             if (res[DISABLE_AUTO_PLAY_VOD] &&

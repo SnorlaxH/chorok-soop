@@ -10,7 +10,7 @@ export default function DownloadButton() {
         const vid = match ? match[1] : null;
         if (vid) {
             const m3u8: Array<object> = []
-            const url_api = isCatch() ? 'https://api.m.sooplive.co.kr/station/video/a/catchview' : 'https://api.m.sooplive.co.kr/station/video/a/view'
+            const url_api = isCatch() ? 'https://api.m.sooplive.com/station/video/a/catchview' : 'https://api.m.sooplive.com/station/video/a/view'
 
             const formData = new FormData()
             formData.append('nTitleNo', vid)

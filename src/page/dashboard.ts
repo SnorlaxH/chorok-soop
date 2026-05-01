@@ -1,17 +1,17 @@
 import '../utils/prototype.ts';
-import { CHAT_LIST_AREA, CHAT_NOTICE, EL_CAPTURE_BUTTON, EL_COMP_BUTTON, PLAYER_BUTTONS } from "../constants/selectors";
+import { CHAT_LIST_AREA, CHAT_NOTICE, CHAT_WRITE_AREA, EL_CAPTURE_BUTTON, EL_COMP_BUTTON, PLAYER_BUTTONS } from "../constants/selectors";
 import { AUDIO_COMP_BUTTON, CAPTURE_BUTTON, CHAT_URL_LINK, COPY_PASTE, DONATE_IMAGE_HIDE, DONATE_IMAGE_SAVE } from "../constants/storage";
-import { createReactElement, waitingElement } from "../utils/dom";
+import { createReactElement, injectScript, waitingElement } from "../utils/dom";
 import { getChatAreaObserver, getNoticeAreaObserver } from "../utils/observe";
 import CaptureButton from '../components/CaptureButton/CaptureButton.tsx';
 import AudioCompressorButton from '../components/AudioCompressorButton/AudioCompressorButton.tsx';
 
 const isDashboard = () => {
-    return document.URL.includes('dashboard.sooplive.co.kr');
+    return document.URL.includes('dashboard.sooplive.com');
 }
 
 const isPopup = () => {
-    return document.URL.includes('dashboard.sooplive.co.kr/popup.php');
+    return document.URL.includes('dashboard.sooplive.com/popup.php');
 }
 
 export const injectDashboardPage = async () => {
@@ -25,7 +25,7 @@ export const injectDashboardPage = async () => {
     }
     else {
         const elChatArea = await waitingElement('#chat_area')
-        if(elChatArea?.style.display == 'block') {
+        if (elChatArea?.style.display == 'block') {
             return;
         }
     }
@@ -34,6 +34,21 @@ export const injectDashboardPage = async () => {
         [COPY_PASTE, CAPTURE_BUTTON, CHAT_URL_LINK, DONATE_IMAGE_SAVE, DONATE_IMAGE_HIDE, AUDIO_COMP_BUTTON],
         (res) => {
             const $btn_list = document.querySelector(PLAYER_BUTTONS)
+
+            console.log('대시보드 페이지에 기능 주입', res);
+            if (
+                res[COPY_PASTE] &&
+                document.querySelector(CHAT_WRITE_AREA)
+            ) {
+                injectScript("inject.js")
+
+                setTimeout(() => {
+                    window.postMessage({
+                        source: 'from-extension',
+                        action: 'crs_copyPaste',
+                    }, '*');
+                }, 500);
+            }
 
             if (
                 res[CAPTURE_BUTTON] &&
