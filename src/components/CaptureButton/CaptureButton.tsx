@@ -26,9 +26,9 @@ export default function CaptureButton() {
             }
         }
 
-        document.addEventListener('keydown', captureEvent)
+        window.addEventListener('keydown', captureEvent, true)
         return () => {
-            document.removeEventListener('keydown', captureEvent)
+            window.removeEventListener('keydown', captureEvent, true)
         }
     }, [])
 
@@ -46,7 +46,7 @@ export default function CaptureButton() {
             context.drawImage(video, 0, 0, canvas.width, canvas.height)
 
             const imageDataURL = canvas.toDataURL('image/png')
-            const id = document.URL.replace('https://play.sooplive.com/', '').replace('https://dashboard.sooplive.com/', '').replace('https://vod.sooplive.com/', '').split('/'[0])
+            const id = document.URL.replace('https://play.sooplive.com/', '').replace('https://dashboard.sooplive.com/', '').replace('https://vod.sooplive.com/', '').split('/')[0]
             save2png(imageDataURL, `chrok_soop_${id}_${new Date().toStr('yyyyMMdd_HHmmsszzz')}.png`)
         } catch (e) {
             console.warn(e)
